@@ -1,4 +1,4 @@
-package cn.ishangit.controller;
+package cn.ishangit.system.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
