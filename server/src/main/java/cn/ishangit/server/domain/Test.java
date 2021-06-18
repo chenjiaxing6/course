@@ -1,10 +1,8 @@
-
 package cn.ishangit.server.domain;
 
-import java.io.Serializable;
-
-public class Test implements Serializable {
+public class Test {
     private Integer id;
+
     private String name;
 
     public Integer getId() {
@@ -25,9 +23,13 @@ public class Test implements Serializable {
 
     @Override
     public String toString() {
-        return "Test{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
+        sb.append(", name=").append(name);
+        sb.append("]");
+        return sb.toString();
     }
 }
