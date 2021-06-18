@@ -1,6 +1,7 @@
-package cn.ishangit.system.mapper;
+package cn.ishangit.server.mapper;
 
-import cn.ishangit.system.domain.Test;
+
+import cn.ishangit.server.domain.Test;
 
 import java.util.List;
 

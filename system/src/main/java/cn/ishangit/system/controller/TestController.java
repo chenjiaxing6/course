@@ -1,7 +1,7 @@
 package cn.ishangit.system.controller;
 
-import cn.ishangit.system.domain.Test;
-import cn.ishangit.system.service.TextService;
+import cn.ishangit.server.domain.Test;
+import cn.ishangit.server.service.TextService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

@@ -10,6 +10,7 @@
         <module>eureka</module>
         <module>system</module>
         <module>gateway</module>
+        <module>server</module>
     </modules>
     <name>course</name>
     <description>Demo project for Spring Boot</description>
@@ -48,6 +49,11 @@
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>5.1.37</version>
+            </dependency>
+            <dependency>
+                <groupId>com.example</groupId>
+                <artifactId>server</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

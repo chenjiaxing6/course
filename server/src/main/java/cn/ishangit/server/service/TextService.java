@@ -1,7 +1,7 @@
-package cn.ishangit.system.service;
+package cn.ishangit.server.service;
 
-import cn.ishangit.system.domain.Test;
-import cn.ishangit.system.mapper.TestMapper;
+import cn.ishangit.server.domain.Test;
+import cn.ishangit.server.mapper.TestMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
