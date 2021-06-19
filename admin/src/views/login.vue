@@ -72,12 +72,15 @@
 </template>
 
 <script>
-$('body').attr('class', 'login-layout light-login');
 export default {
-  name: 'App',
+  name: "login",
+  mounted:function () {
+    $("body").removeClass("class", "no-skin");
+    $("body").attr("class", "login-layout light-login");
+  },
   methods:{
     login(){
-      this.$router.push("/admin")
+      this.$router.push("admin");
     }
   }
 }
