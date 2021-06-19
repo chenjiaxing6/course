@@ -80,7 +80,7 @@ export default {
   },
   methods:{
     login(){
-      this.$router.push("admin");
+      this.$router.push("welcome");
     }
   }
 }
