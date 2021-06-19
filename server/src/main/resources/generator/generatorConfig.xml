@@ -40,6 +40,6 @@
                              targetPackage="cn.ishangit.server.mapper"
                              type="XMLMAPPER" />
 
-        <table tableName="test" domainObjectName="Test"/>
+        <table tableName="chapter" domainObjectName="Chapter"/>
     </context>
 </generatorConfiguration>
