@@ -10,6 +10,7 @@ import cn.ishangit.server.util.UuidUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -31,10 +32,21 @@ public class ChapterService {
     }
 
     public void save(ChapterDto chapterDto){
-        Chapter chapter = new Chapter();
-        chapterDto.setId(UuidUtil.getShortUuid());
-        chapter = CopyUtils.copy(chapterDto,chapter.getClass());
+        Chapter chapter = CopyUtils.copy(chapterDto,Chapter.class);
+        if(StringUtils.isEmpty(chapter.getId())){
+            this.insert(chapter);
+        }else {
+            this.update(chapter);
+        }
+    }
+    public void update(Chapter chapter){
+        chapterMapper.updateByPrimaryKey(chapter);
+    }
+
+    public void insert(Chapter chapter){
+        chapter.setId(UuidUtil.getShortUuid());
         chapterMapper.insert(chapter);
     }
+
 
 }
