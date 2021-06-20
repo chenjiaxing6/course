@@ -1,5 +1,6 @@
 package cn.ishangit.business.controller.admin;
 
+import cn.ishangit.server.dto.ChapterDto;
 import cn.ishangit.server.dto.PageDto;
 import cn.ishangit.server.service.ChapterService;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +24,12 @@ public class ChapterController {
     public PageDto list(@RequestBody PageDto pageDto) {
         chapterService.list(pageDto);
         return pageDto;
+    }
+
+    @RequestMapping("/save")
+    public ChapterDto save(@RequestBody ChapterDto chapterDto) {
+        chapterService.save(chapterDto);
+        return chapterDto;
     }
 
 }
