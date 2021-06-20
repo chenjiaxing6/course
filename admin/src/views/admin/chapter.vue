@@ -100,7 +100,9 @@ export default {
     },
     save(page){
       let _this = this;
+      Loading.show();
       _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/save',_this.chapter).then((response)=>{
+        Loading.hide();
         console.log("保存大章列表结果：", response);
         _this.chapter = {};
         if(response.data.success){
@@ -112,10 +114,12 @@ export default {
     },
     list(page) {
       let _this = this;
+      Loading.show();
       _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/list', {
         page: page,//5.给page赋值
         size: _this.$refs.pagination.size,//6.给size赋值
       }).then((response) => {
+        Loading.hide();
         console.log("查询大章列表结果：", response);
         // _this.chapters = response.data.list;
         // _this.$refs.pagination.render(page, response.data.total);//7.重新渲染分页数据
@@ -130,6 +134,7 @@ export default {
     },
     del(id) {
       let _this = this;
+      Loading.show();
       Swal.fire({
         title: '确认删除?',
         text: "删除后将无法恢复!",
@@ -141,6 +146,7 @@ export default {
       }).then((result) => {
         if (result.value) {
           _this.$ajax.delete('http://127.0.0.1:9000/business/admin/chapter/delete/'+id).then((response) => {
+            Loading.hide();
             console.log("删除大章：", response);
             let res = response.data;
             if (res.success) {
