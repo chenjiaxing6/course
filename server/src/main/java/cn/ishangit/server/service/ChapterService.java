@@ -3,7 +3,10 @@ package cn.ishangit.server.service;
 import cn.ishangit.server.domain.Chapter;
 import cn.ishangit.server.domain.ChapterExample;
 import cn.ishangit.server.dto.ChapterDto;
+import cn.ishangit.server.dto.PageDto;
 import cn.ishangit.server.mapper.ChapterMapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -17,17 +20,20 @@ public class ChapterService {
     private ChapterMapper chapterMapper;
 
 
-    public List<ChapterDto> list() {
+    public void list(PageDto pageDto) {
+        PageHelper.startPage(pageDto.getPage(), pageDto.getSize());
         ChapterExample chapterExample = new ChapterExample();
         List<Chapter> chapters = chapterMapper.selectByExample(chapterExample);
-        List<ChapterDto> chapterDtoList = new ArrayList<>();
+        PageInfo<Chapter> pageInfo = new PageInfo<>(chapters);
+        pageDto.setTotal(pageInfo.getTotal());
+        List<ChapterDto> chapterDtoList  = new ArrayList<>();
         for (int i = 0; i < chapters.size(); i++) {
             Chapter chapter = chapters.get(i);
             ChapterDto chapterDto = new ChapterDto();
-            BeanUtils.copyProperties(chapter, chapterDto);
+            BeanUtils.copyProperties(chapter,chapterDto);
             chapterDtoList.add(chapterDto);
         }
-        return chapterDtoList;
+        pageDto.setList(chapterDtoList);
     }
 
 }

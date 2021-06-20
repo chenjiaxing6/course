@@ -1,12 +1,12 @@
 package cn.ishangit.business.controller.admin;
 
-import cn.ishangit.server.dto.ChapterDto;
+import cn.ishangit.server.dto.PageDto;
 import cn.ishangit.server.service.ChapterService;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @RestController
 @RequestMapping("/admin/chapter")
@@ -20,8 +20,9 @@ public class ChapterController {
     }
 
     @RequestMapping("/list")
-    public List<ChapterDto> list() {
-        return chapterService.list();
+    public PageDto list(@RequestBody PageDto pageDto) {
+        chapterService.list(pageDto);
+        return pageDto;
     }
 
 }
