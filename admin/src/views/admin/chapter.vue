@@ -115,6 +115,8 @@ export default {
           $("#form-modal").modal("hide");
           _this.list(1);
           Toast.success("保存成功")
+        }else {
+          Toast.success(response.data.message)
         }
       })
     },
