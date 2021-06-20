@@ -33,7 +33,7 @@
               <i class="ace-icon fa fa-pencil bigger-120"></i>
             </button>
 
-            <button class="btn btn-xs btn-danger">
+            <button class="btn btn-xs btn-danger" v-on:click="del(chapter.id)">
               <i class="ace-icon fa fa-trash-o bigger-120"></i>
             </button>
           </div>
@@ -126,6 +126,16 @@ export default {
       let _this = this;
       _this.chapter = $.extend({}, chapter);
       $("#form-modal").modal("show");
+    },
+    del(id){
+      let _this = this;
+      _this.$ajax.delete('http://127.0.0.1:9000/business/admin/chapter/delete/'+id).then((response)=>{
+        console.log("删除大章结果：", response);
+        if(response.data.success){
+          $("#form-modal").modal("hide");
+          _this.list(1);
+        }
+      })
     }
   }
 }
