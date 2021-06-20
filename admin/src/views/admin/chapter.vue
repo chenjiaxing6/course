@@ -91,15 +91,21 @@ export default {
     let _this = this;
     _this.$refs.pagination.size = 5;//3.设置每次进入每页显示5条
     _this.list(1);//4.默认显示第一页
-    // this.$parent.activeSidebar("business-chapter-sidebar")
   },
   methods: {
     add() {
       let _this = this;
+      _this.chapter = {};
       $("#form-modal").modal("show");
     },
     save(page){
       let _this = this;
+      // 保存校验
+      if (!Validator.require(_this.chapter.name, "名称")
+          || !Validator.require(_this.chapter.courseId, "课程ID")
+          || !Validator.length(_this.chapter.courseId, "课程ID", 1, 8)) {
+        return;
+      }
       Loading.show();
       _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/save',_this.chapter).then((response)=>{
         Loading.hide();

@@ -13,6 +13,7 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("/admin/chapter")
 public class ChapterController {
+
     @Resource
     private ChapterService chapterService;
 
@@ -48,5 +49,4 @@ public class ChapterController {
         chapterService.delete(id);
         return responseDto;
     }
-
 }
