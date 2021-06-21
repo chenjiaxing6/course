@@ -22,11 +22,11 @@ public class ChapterController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ChapterController.class);
 
-    @RequestMapping("/hello")
-    public String helloWorld() {
-        return "success";
-    }
-
+    /**
+     * 列表查询
+     * @param pageDto
+     * @return
+     */
     @PostMapping("/list")
     public ResponseDto list(@RequestBody PageDto pageDto) {
         LOG.info("pageDto: {}", pageDto);
@@ -36,6 +36,11 @@ public class ChapterController {
         return responseDto;
     }
 
+    /**
+     * 保存
+     * @param chapterDto
+     * @return
+     */
     @PostMapping("/save")
     public ResponseDto save(@RequestBody ChapterDto chapterDto) {
         LOG.info("chapterDto: {}", chapterDto);
@@ -48,6 +53,11 @@ public class ChapterController {
         return responseDto;
     }
 
+    /**
+     * 删除
+     * @param id
+     * @return
+     */
     @DeleteMapping("/delete/{id}")
     public ResponseDto delete(@PathVariable String id) {
         LOG.info("chapterDto: {}", id);

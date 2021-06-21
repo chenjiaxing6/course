@@ -70,17 +70,17 @@
             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
             <button v-on:click="save()" type="button" class="btn btn-primary">保存</button>
           </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import Pagination from "../../components/pagination";//1.导入组件
+import Pagination from "../../components/pagination";
 export default {
   name: "chapter",
-  components: {Pagination},//2.导入组件
+  components: {Pagination},
   data: function () {
     return {
       chapter:{},
@@ -89,15 +89,22 @@ export default {
   },
   mounted: function () {
     let _this = this;
-    _this.$refs.pagination.size = 5;//3.设置每次进入每页显示5条
-    _this.list(1);//4.默认显示第一页
+    _this.$refs.pagination.size = 5;
+    _this.list(1);
   },
   methods: {
+    /**
+     * 点击新增
+     */
     add() {
       let _this = this;
       _this.chapter = {};
       $("#form-modal").modal("show");
     },
+    /**
+     * 点击保存 id有值为修改，无值为新增
+     * @param page
+     */
     save(page){
       let _this = this;
       // 保存校验
@@ -109,7 +116,6 @@ export default {
       Loading.show();
       _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/save',_this.chapter).then((response)=>{
         Loading.hide();
-        console.log("保存大章列表结果：", response);
         _this.chapter = {};
         if(response.data.success){
           $("#form-modal").modal("hide");
@@ -120,32 +126,40 @@ export default {
         }
       })
     },
+    /**
+     * 列表
+     * @param page
+     */
     list(page) {
       let _this = this;
       Loading.show();
       _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/list', {
-        page: page,//5.给page赋值
-        size: _this.$refs.pagination.size,//6.给size赋值
+        page: page,
+        size: _this.$refs.pagination.size,
       }).then((response) => {
         Loading.hide();
-        console.log("查询大章列表结果：", response);
-        // _this.chapters = response.data.list;
-        // _this.$refs.pagination.render(page, response.data.total);//7.重新渲染分页数据
         _this.chapters = response.data.content.list;
         _this.$refs.pagination.render(page, response.data.content.total);
       })
     },
+    /**
+     * 点击修改
+     * @param chapter
+     */
     edit(chapter){
       let _this = this;
       _this.chapter = $.extend({}, chapter);
       $("#form-modal").modal("show");
     },
+    /**
+     * 点击删除
+     * @param id
+     */
     del(id) {
       let _this = this;
       Confirm.show("删除大章后不可恢复，确认删除？", function () {
         Loading.show();
         _this.$ajax.delete('http://127.0.0.1:9000/business/admin/chapter/delete/' + id).then((response) => {
-          console.log("删除大章：", response);
           let res = response.data;
           if (res.success) {
             Loading.hide();

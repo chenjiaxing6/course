@@ -20,7 +20,10 @@ public class ChapterService {
     @Resource
     private ChapterMapper chapterMapper;
 
-
+    /**
+     *列表查询
+     * @param pageDto
+     */
     public void list(PageDto pageDto) {
         PageHelper.startPage(pageDto.getPage(), pageDto.getSize());
         ChapterExample chapterExample = new ChapterExample();
@@ -31,6 +34,10 @@ public class ChapterService {
         pageDto.setList(chapterDtoList);
     }
 
+    /**
+     * 保存
+     * @param chapterDto
+     */
     public void save(ChapterDto chapterDto){
         Chapter chapter = CopyUtils.copy(chapterDto,Chapter.class);
         if(StringUtils.isEmpty(chapter.getId())){
@@ -39,15 +46,28 @@ public class ChapterService {
             this.update(chapter);
         }
     }
+
+    /**
+     * 更新
+     * @param chapter
+     */
     public void update(Chapter chapter){
         chapterMapper.updateByPrimaryKey(chapter);
     }
 
+    /**
+     * 插入
+     * @param chapter
+     */
     public void insert(Chapter chapter){
         chapter.setId(UuidUtil.getShortUuid());
         chapterMapper.insert(chapter);
     }
 
+    /**
+     * 删除
+     * @param id
+     */
     public void delete(String id){
         chapterMapper.deleteByPrimaryKey(id);
     }
