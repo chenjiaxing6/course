@@ -18,6 +18,8 @@ public class ChapterController {
     @Resource
     private ChapterService chapterService;
 
+    public static final String BUSINESS_NAME = "大章";
+
     private static final Logger LOG = LoggerFactory.getLogger(ChapterController.class);
 
     @RequestMapping("/hello")
