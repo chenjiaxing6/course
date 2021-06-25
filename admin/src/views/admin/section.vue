@@ -15,28 +15,28 @@
     <table id="simple-table" class="table  table-bordered table-hover">
       <thead>
       <tr>
-                  <th>标题</th>
-          <th>课程</th>
-          <th>大章</th>
-          <th>视频</th>
-          <th>时长</th>
-          <th>收费</th>
-          <th>顺序</th>
-          <th>vod</th>
+        <th>标题</th>
+        <th>课程</th>
+        <th>大章</th>
+        <th>视频</th>
+        <th>时长</th>
+        <th>收费</th>
+        <th>顺序</th>
+        <th>vod</th>
         <th>操作</th>
       </tr>
       </thead>
 
       <tbody>
       <tr v-for="section in sections">
-          <td>{{section.title}}</td>
-          <td>{{section.courseId}}</td>
-          <td>{{section.chapterId}}</td>
-          <td>{{section.video}}</td>
-          <td>{{section.time}}</td>
-          <td>{{section.charge}}</td>
-          <td>{{section.sort}}</td>
-          <td>{{section.vod}}</td>
+        <td>{{ section.title }}</td>
+        <td>{{ section.courseId }}</td>
+        <td>{{ section.chapterId }}</td>
+        <td>{{ section.video }}</td>
+        <td>{{ section.time }}</td>
+        <td>{{ CHARGE | optionKV(section.charge) }}</td>
+        <td>{{ section.sort }}</td>
+        <td>{{ section.vod }}</td>
         <td>
           <div class="hidden-sm hidden-xs btn-group">
             <button class="btn btn-xs btn-info" v-on:click="edit(section)">
@@ -57,59 +57,61 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                      aria-hidden="true">×</span></button>
+                aria-hidden="true">×</span></button>
             <h4 class="modal-title">表单</h4>
           </div>
           <div class="modal-body">
             <form class="form-horizontal">
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">标题</label>
-                  <div class="col-sm-10">
-                    <input v-model="section.title" class="form-control">
-                  </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">标题</label>
+                <div class="col-sm-10">
+                  <input v-model="section.title" class="form-control">
                 </div>
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">课程</label>
-                  <div class="col-sm-10">
-                    <input v-model="section.courseId" class="form-control">
-                  </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">课程</label>
+                <div class="col-sm-10">
+                  <input v-model="section.courseId" class="form-control">
                 </div>
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">大章</label>
-                  <div class="col-sm-10">
-                    <input v-model="section.chapterId" class="form-control">
-                  </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">大章</label>
+                <div class="col-sm-10">
+                  <input v-model="section.chapterId" class="form-control">
                 </div>
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">视频</label>
-                  <div class="col-sm-10">
-                    <input v-model="section.video" class="form-control">
-                  </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">视频</label>
+                <div class="col-sm-10">
+                  <input v-model="section.video" class="form-control">
                 </div>
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">时长</label>
-                  <div class="col-sm-10">
-                    <input v-model="section.time" class="form-control">
-                  </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">时长</label>
+                <div class="col-sm-10">
+                  <input v-model="section.time" class="form-control">
                 </div>
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">收费</label>
-                  <div class="col-sm-10">
-                    <input v-model="section.charge" class="form-control">
-                  </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">收费</label>
+                <div class="col-sm-10">
+                  <select v-model="section.charge" class="form-control">
+                    <option v-for="o in CHARGE" v-bind:value="o.key">{{ o.value }}</option>
+                  </select>
                 </div>
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">顺序</label>
-                  <div class="col-sm-10">
-                    <input v-model="section.sort" class="form-control">
-                  </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">顺序</label>
+                <div class="col-sm-10">
+                  <input v-model="section.sort" class="form-control">
                 </div>
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">vod</label>
-                  <div class="col-sm-10">
-                    <input v-model="section.vod" class="form-control">
-                  </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">vod</label>
+                <div class="col-sm-10">
+                  <input v-model="section.vod" class="form-control">
                 </div>
+              </div>
             </form>
           </div>
           <div class="modal-footer">
@@ -124,13 +126,15 @@
 
 <script>
 import Pagination from "../../components/pagination";
+
 export default {
   name: "section",
   components: {Pagination},
   data: function () {
     return {
-      section:{},
-      sections: []
+      section: {},
+      sections: [],
+      CHARGE: [{key: "C", value: "收费"}, {key: "F", value: "免费"}],
     }
   },
   mounted: function () {
@@ -151,26 +155,26 @@ export default {
      * 点击保存 id有值为修改，无值为新增
      * @param page
      */
-    save(page){
+    save(page) {
       let _this = this;
       // 保存校验
-    if (1 != 1
-      || !Validator.require(_this.section.title, "标题")
-      || !Validator.length(_this.section.title, "标题", 1, 50)
-      || !Validator.length(_this.section.video, "视频", 1, 200)
-    ) {
-      return;
-    }
+      if (1 != 1
+          || !Validator.require(_this.section.title, "标题")
+          || !Validator.length(_this.section.title, "标题", 1, 50)
+          || !Validator.length(_this.section.video, "视频", 1, 200)
+      ) {
+        return;
+      }
 
       Loading.show();
-      _this.$ajax.post(process.env.VUE_APP_SERVER+'/business/admin/section/save',_this.section).then((response)=>{
+      _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/section/save', _this.section).then((response) => {
         Loading.hide();
         _this.section = {};
-        if(response.data.success){
+        if (response.data.success) {
           $("#form-modal").modal("hide");
           _this.list(1);
           Toast.success("保存成功")
-        }else {
+        } else {
           Toast.success(response.data.message)
         }
       })
@@ -182,7 +186,7 @@ export default {
     list(page) {
       let _this = this;
       Loading.show();
-      _this.$ajax.post(process.env.VUE_APP_SERVER+'/business/admin/section/list', {
+      _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/section/list', {
         page: page,
         size: _this.$refs.pagination.size,
       }).then((response) => {
@@ -195,7 +199,7 @@ export default {
      * 点击修改
      * @param section
      */
-    edit(section){
+    edit(section) {
       let _this = this;
       _this.section = $.extend({}, section);
       $("#form-modal").modal("show");
@@ -208,7 +212,7 @@ export default {
       let _this = this;
       Confirm.show("删除小节后不可恢复，确认删除？", function () {
         Loading.show();
-        _this.$ajax.delete(process.env.VUE_APP_SERVER+'/business/admin/section/delete/' + id).then((response) => {
+        _this.$ajax.delete(process.env.VUE_APP_SERVER + '/business/admin/section/delete/' + id).then((response) => {
           let res = response.data;
           if (res.success) {
             Loading.hide();
