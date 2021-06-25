@@ -114,7 +114,7 @@ export default {
         return;
       }
       Loading.show();
-      _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/save',_this.chapter).then((response)=>{
+      _this.$ajax.post(process.env.VUE_APP_SERVER+'/business/admin/chapter/save',_this.chapter).then((response)=>{
         Loading.hide();
         _this.chapter = {};
         if(response.data.success){
@@ -133,7 +133,7 @@ export default {
     list(page) {
       let _this = this;
       Loading.show();
-      _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/list', {
+      _this.$ajax.post(process.env.VUE_APP_SERVER+'/business/admin/chapter/list', {
         page: page,
         size: _this.$refs.pagination.size,
       }).then((response) => {
@@ -159,7 +159,7 @@ export default {
       let _this = this;
       Confirm.show("删除大章后不可恢复，确认删除？", function () {
         Loading.show();
-        _this.$ajax.delete('http://127.0.0.1:9000/business/admin/chapter/delete/' + id).then((response) => {
+        _this.$ajax.delete(process.env.VUE_APP_SERVER+'/business/admin/chapter/delete/' + id).then((response) => {
           let res = response.data;
           if (res.success) {
             Loading.hide();
