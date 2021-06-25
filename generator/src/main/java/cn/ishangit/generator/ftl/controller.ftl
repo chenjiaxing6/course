@@ -1,9 +1,9 @@
-package cn.ishangit.business.controller.admin;
+package cn.ishangit.${module}.controller.admin;
 
-import cn.ishangit.server.dto.ChapterDto;
+import cn.ishangit.server.dto.${Domain}Dto;
 import cn.ishangit.server.dto.PageDto;
 import cn.ishangit.server.dto.ResponseDto;
-import cn.ishangit.server.service.ChapterService;
+import cn.ishangit.server.service.${Domain}Service;
 import cn.ishangit.server.util.ValidatorUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,15 +12,15 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 
 @RestController
-@RequestMapping("/admin/chapter")
-public class ChapterController {
+@RequestMapping("/admin/${domain}")
+public class ${Domain}Controller {
 
     @Resource
-    private ChapterService chapterService;
+    private ${Domain}Service ${domain}Service;
 
-    public static final String BUSINESS_NAME = "大章";
+    public static final String BUSINESS_NAME = "${tableNameCn}";
 
-    private static final Logger LOG = LoggerFactory.getLogger(ChapterController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(${Domain}Controller.class);
 
     /**
      * 列表查询
@@ -29,7 +29,7 @@ public class ChapterController {
      */
     @PostMapping("/list")
     public ResponseDto list(@RequestBody PageDto pageDto) {
-        chapterService.list(pageDto);
+        ${domain}Service.list(pageDto);
         ResponseDto responseDto = new ResponseDto();
         responseDto.setContent(pageDto);
         return responseDto;
@@ -37,17 +37,14 @@ public class ChapterController {
 
     /**
      * 保存
-     * @param chapterDto
+     * @param ${domain}Dto
      * @return
      */
     @PostMapping("/save")
-    public ResponseDto save(@RequestBody ChapterDto chapterDto) {
-        ValidatorUtil.require(chapterDto.getName(), "名称");
-        ValidatorUtil.require(chapterDto.getCourseId(), "课程ID");
-        ValidatorUtil.length(chapterDto.getCourseId(), "课程ID", 1, 8);
-        chapterService.save(chapterDto);
+    public ResponseDto save(@RequestBody ${Domain}Dto ${domain}Dto) {
+        ${domain}Service.save(${domain}Dto);
         ResponseDto responseDto = new ResponseDto();
-        responseDto.setContent(chapterDto);
+        responseDto.setContent(${domain}Dto);
         return responseDto;
     }
 
@@ -59,7 +56,7 @@ public class ChapterController {
     @DeleteMapping("/delete/{id}")
     public ResponseDto delete(@PathVariable String id) {
         ResponseDto responseDto = new ResponseDto();
-        chapterService.delete(id);
+        ${domain}Service.delete(id);
         return responseDto;
     }
 }
