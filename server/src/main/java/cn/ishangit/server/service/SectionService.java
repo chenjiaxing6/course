@@ -3,7 +3,7 @@ package cn.ishangit.server.service;
 import cn.ishangit.server.domain.Section;
 import cn.ishangit.server.domain.SectionExample;
 import cn.ishangit.server.dto.SectionDto;
-import cn.ishangit.server.dto.PageDto;
+import cn.ishangit.server.dto.SectionPageDto;
 import cn.ishangit.server.mapper.SectionMapper;
 import cn.ishangit.server.util.CopyUtils;
 import cn.ishangit.server.util.UuidUtil;
@@ -13,9 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.List;
-
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class SectionService {
@@ -24,17 +23,25 @@ public class SectionService {
 
     /**
      *列表查询
-     * @param pageDto
+     * @param sectionPageDto
      */
-    public void list(PageDto pageDto) {
-        PageHelper.startPage(pageDto.getPage(), pageDto.getSize());
+    public void list(SectionPageDto sectionPageDto) {
+        PageHelper.startPage(sectionPageDto.getPage(), sectionPageDto.getSize());
         SectionExample sectionExample = new SectionExample();
+        //条件查询
+        SectionExample.Criteria criteria = sectionExample.createCriteria();
+        if (!StringUtils.isEmpty(sectionPageDto.getCourseId())){
+            criteria.andCourseIdEqualTo(sectionPageDto.getCourseId());
+        }
+        if (!StringUtils.isEmpty(sectionPageDto.getChapterId())){
+            criteria.andChapterIdEqualTo(sectionPageDto.getChapterId());
+        }
         sectionExample.setOrderByClause("sort asc");
         List<Section> sections = sectionMapper.selectByExample(sectionExample);
         PageInfo<Section> pageInfo = new PageInfo<>(sections);
-        pageDto.setTotal(pageInfo.getTotal());
+        sectionPageDto.setTotal(pageInfo.getTotal());
         List<SectionDto>  sectionDtoList = CopyUtils.copyList(sections,SectionDto.class);
-        pageDto.setList(sectionDtoList);
+        sectionPageDto.setList(sectionDtoList);
     }
 
     /**

@@ -1,6 +1,10 @@
 <template>
   <div>
-    <h3>{{course.name}}</h3>
+    <h4 class="lighter">
+      <i class="ace-icon fa fa-hand-o-right icon-animated-hand-pointer blue"></i>
+      <router-link to="/business/course" class="pink"> {{ course.name }}</router-link>
+    </h4>
+    <hr>
     <p>
       <router-link to="/business/course" class="btn btn-white btn-default btn-round">
         <i class="ace-icon fa fa-arrow-left"></i>
@@ -35,20 +39,16 @@
         <td>{{ chapter.courseId }}</td>
         <td>
           <div class="hidden-sm hidden-xs btn-group">
-            <button class="btn btn-xs btn-info" v-on:click="edit(chapter)">
-              <i class="ace-icon fa fa-pencil bigger-120"></i>
-            </button>
-
-            <button class="btn btn-xs btn-danger" v-on:click="del(chapter.id)">
-              <i class="ace-icon fa fa-trash-o bigger-120"></i>
-            </button>
+            <button v-on:click="toSection(chapter)" class="btn btn-white btn-xs btn-info btn-round">小节</button>&nbsp;
+            <button v-on:click="edit(chapter)" class="btn btn-white btn-xs btn-info btn-round">编辑</button>&nbsp;
+            <button v-on:click="del(chapter.id)" class="btn btn-white btn-xs btn-warning btn-round">删除</button>
           </div>
         </td>
       </tr>
       </tbody>
     </table>
 
-    <div id="form-modal"  class="modal fade" tabindex="-1" role="dialog">
+    <div id="form-modal" class="modal fade" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -65,9 +65,9 @@
                 </div>
               </div>
               <div class="form-group">
-                <label  class="col-sm-2 control-label">课程</label>
+                <label class="col-sm-2 control-label">课程</label>
                 <div class="col-sm-10">
-                  <p class="form-control-static">{{course.name}}</p>
+                  <p class="form-control-static">{{ course.name }}</p>
                 </div>
               </div>
             </form>
@@ -84,14 +84,15 @@
 
 <script>
 import Pagination from "../../components/pagination";
+
 export default {
   name: "chapter",
   components: {Pagination},
   data: function () {
     return {
-      chapter:{},
+      chapter: {},
       chapters: [],
-      course:{},
+      course: {},
     }
   },
   mounted: function () {
@@ -117,7 +118,7 @@ export default {
      * 点击保存 id有值为修改，无值为新增
      * @param page
      */
-    save(page){
+    save(page) {
       let _this = this;
       // 保存校验
       if (!Validator.require(_this.chapter.name, "名称")) {
@@ -125,14 +126,14 @@ export default {
       }
       _this.chapter.courseId = _this.course.id;
       Loading.show();
-      _this.$ajax.post(process.env.VUE_APP_SERVER+'/business/admin/chapter/save',_this.chapter).then((response)=>{
+      _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/chapter/save', _this.chapter).then((response) => {
         Loading.hide();
         _this.chapter = {};
-        if(response.data.success){
+        if (response.data.success) {
           $("#form-modal").modal("hide");
           _this.list(1);
           Toast.success("保存成功")
-        }else {
+        } else {
           Toast.success(response.data.message)
         }
       })
@@ -144,7 +145,7 @@ export default {
     list(page) {
       let _this = this;
       Loading.show();
-      _this.$ajax.post(process.env.VUE_APP_SERVER+'/business/admin/chapter/list', {
+      _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/chapter/list', {
         page: page,
         size: _this.$refs.pagination.size,
         courseId: _this.course.id,
@@ -158,7 +159,7 @@ export default {
      * 点击修改
      * @param chapter
      */
-    edit(chapter){
+    edit(chapter) {
       let _this = this;
       _this.chapter = $.extend({}, chapter);
       $("#form-modal").modal("show");
@@ -171,7 +172,7 @@ export default {
       let _this = this;
       Confirm.show("删除大章后不可恢复，确认删除？", function () {
         Loading.show();
-        _this.$ajax.delete(process.env.VUE_APP_SERVER+'/business/admin/chapter/delete/' + id).then((response) => {
+        _this.$ajax.delete(process.env.VUE_APP_SERVER + '/business/admin/chapter/delete/' + id).then((response) => {
           let res = response.data;
           if (res.success) {
             Loading.hide();
@@ -180,6 +181,14 @@ export default {
           }
         })
       })
+    },
+    /**
+     * 点击【小节】
+     */
+    toSection(chapter) {
+      let _this = this;
+      SessionStorage.set("chapter", chapter);
+      _this.$router.push("/business/section");
     }
   }
 }

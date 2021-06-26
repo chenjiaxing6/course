@@ -1,8 +1,8 @@
 package cn.ishangit.business.controller.admin;
 
-import cn.ishangit.server.dto.SectionDto;
-import cn.ishangit.server.dto.PageDto;
 import cn.ishangit.server.dto.ResponseDto;
+import cn.ishangit.server.dto.SectionDto;
+import cn.ishangit.server.dto.SectionPageDto;
 import cn.ishangit.server.service.SectionService;
 import cn.ishangit.server.util.ValidatorUtil;
 import org.slf4j.Logger;
@@ -24,14 +24,16 @@ public class SectionController {
 
     /**
      * 列表查询
-     * @param pageDto
+     * @param sectionPageDto
      * @return
      */
     @PostMapping("/list")
-    public ResponseDto list(@RequestBody PageDto pageDto) {
-        sectionService.list(pageDto);
+    public ResponseDto list(@RequestBody SectionPageDto sectionPageDto) {
+        ValidatorUtil.require(sectionPageDto.getCourseId(),"课程ID");
+        ValidatorUtil.require(sectionPageDto.getChapterId(),"大章ID");
+        sectionService.list(sectionPageDto);
         ResponseDto responseDto = new ResponseDto();
-        responseDto.setContent(pageDto);
+        responseDto.setContent(sectionPageDto);
         return responseDto;
     }
 
