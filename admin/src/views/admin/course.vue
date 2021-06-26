@@ -246,6 +246,14 @@ export default {
           }
         })
       })
+    },
+    /**
+     * 点击【大章】
+     */
+    toChapter(course) {
+      let _this = this;
+      SessionStorage.set("course", course);
+      _this.$router.push("/business/chapter");
     }
   }
 }

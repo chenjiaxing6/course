@@ -1,7 +1,7 @@
 package cn.ishangit.business.controller.admin;
 
 import cn.ishangit.server.dto.ChapterDto;
-import cn.ishangit.server.dto.PageDto;
+import cn.ishangit.server.dto.ChapterPageDto;
 import cn.ishangit.server.dto.ResponseDto;
 import cn.ishangit.server.service.ChapterService;
 import cn.ishangit.server.util.ValidatorUtil;
@@ -24,14 +24,15 @@ public class ChapterController {
 
     /**
      * 列表查询
-     * @param pageDto
+     * @param chapterPageDto
      * @return
      */
     @PostMapping("/list")
-    public ResponseDto list(@RequestBody PageDto pageDto) {
-        chapterService.list(pageDto);
+    public ResponseDto list(@RequestBody ChapterPageDto chapterPageDto) {
+        ValidatorUtil.require(chapterPageDto.getCourseId(),"课程ID");
+        chapterService.list(chapterPageDto);
         ResponseDto responseDto = new ResponseDto();
-        responseDto.setContent(pageDto);
+        responseDto.setContent(chapterPageDto);
         return responseDto;
     }
 
