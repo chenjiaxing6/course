@@ -10,6 +10,7 @@ import cn.ishangit.server.util.UuidUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -20,6 +21,9 @@ import java.util.List;
 public class SectionService {
     @Resource
     private SectionMapper sectionMapper;
+
+    @Resource
+    private CourseService courseService;
 
     /**
      *列表查询
@@ -48,6 +52,7 @@ public class SectionService {
      * 保存
      * @param sectionDto
      */
+    @Transactional
     public void save(SectionDto sectionDto){
         Section section = CopyUtils.copy(sectionDto,Section.class);
         Date now = new Date();
@@ -58,6 +63,7 @@ public class SectionService {
         }else {
             this.update(section);
         }
+        courseService.updateTime(sectionDto.getCourseId());
     }
 
     /**
