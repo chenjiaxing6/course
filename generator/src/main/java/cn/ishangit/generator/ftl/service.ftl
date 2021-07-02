@@ -51,19 +51,6 @@ public class ${Domain}Service {
      */
     public void save(${Domain}Dto ${domain}Dto){
         ${Domain} ${domain} = CopyUtils.copy(${domain}Dto,${Domain}.class);
-        <#list typeSet as type>
-            <#if type=='Date'>
-        Date now = new Date();
-            </#if>
-        </#list>
-        <#list fieldList as field>
-            <#if field.nameHump=='createdAt'>
-        ${domain}.setCreatedAt(now);
-            </#if>
-            <#if field.nameHump=='updatedAt'>
-        ${domain}.setUpdatedAt(now);
-            </#if>
-        </#list>
         if(StringUtils.isEmpty(${domain}.getId())){
             this.insert(${domain});
         }else {
@@ -89,6 +76,19 @@ public class ${Domain}Service {
      * @param ${domain}
      */
     public void insert(${Domain} ${domain}){
+        <#list typeSet as type>
+            <#if type=='Date'>
+        Date now = new Date();
+            </#if>
+        </#list>
+        <#list fieldList as field>
+            <#if field.nameHump=='createdAt'>
+        ${domain}.setCreatedAt(now);
+            </#if>
+            <#if field.nameHump=='updatedAt'>
+        ${domain}.setUpdatedAt(now);
+            </#if>
+        </#list>
         ${domain}.setId(UuidUtil.getShortUuid());
         ${domain}Mapper.insert(${domain});
     }
