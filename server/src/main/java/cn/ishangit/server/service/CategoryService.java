@@ -37,6 +37,15 @@ public class CategoryService {
     }
 
     /**
+     * 查询全部
+     */
+    public List<CategoryDto> all() {
+        List<Category> categorys = categoryMapper.selectByExample(null);
+        List<CategoryDto>  categoryDtoList = CopyUtils.copyList(categorys,CategoryDto.class);
+        return categoryDtoList;
+    }
+
+    /**
      * 保存
      * @param categoryDto
      */
