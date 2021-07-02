@@ -70,6 +70,12 @@
           <div class="modal-body">
             <form class="form-horizontal">
                   <div class="form-group">
+                    <label class="col-sm-2 control-label">分类</label>
+                    <div class="col-sm-10">
+                      <ul id="tree" class="ztree"></ul>
+                    </div>
+                  </div>
+                  <div class="form-group">
                     <label class="col-sm-2 control-label">名称</label>
                     <div class="col-sm-10">
                       <input v-model="course.name" class="form-control">
@@ -159,12 +165,15 @@ export default {
       COURSE_LEVEL: COURSE_LEVEL,
       COURSE_CHARGE: COURSE_CHARGE,
       COURSE_STATUS: COURSE_STATUS,
+      category:{},
+      tree:{},
     }
   },
   mounted: function () {
     let _this = this;
     _this.$refs.pagination.size = 5;
     _this.list(1);
+    _this.allCategory();
   },
   methods: {
     /**
@@ -173,6 +182,7 @@ export default {
     add() {
       let _this = this;
       _this.course = {};
+      _this.tree.checkAllNodes(false);
       $("#form-modal").modal("show");
     },
     /**
@@ -186,11 +196,16 @@ export default {
       || !Validator.require(_this.course.name, "名称")
       || !Validator.length(_this.course.name, "名称", 1, 50)
       || !Validator.length(_this.course.summary, "概述", 1, 2000)
-      || !Validator.length(_this.course.image, "封面", 1, 100)
     ) {
       return;
     }
-
+      // 校验是否选好分类
+      let categorys = _this.tree.getCheckedNodes();
+      if (Tool.isEmpty(categorys)) {
+        Toast.warning("请选择分类！");
+        return;
+      }
+      _this.course.categorys = categorys;
       Loading.show();
       _this.$ajax.post(process.env.VUE_APP_SERVER+'/business/admin/course/save',_this.course).then((response)=>{
         Loading.hide();
@@ -226,6 +241,7 @@ export default {
      */
     edit(course){
       let _this = this;
+      _this.listCategory(course.id);
       _this.course = $.extend({}, course);
       $("#form-modal").modal("show");
     },
@@ -254,7 +270,63 @@ export default {
       let _this = this;
       SessionStorage.set("course", course);
       _this.$router.push("/business/chapter");
-    }
+    },
+    /**
+     *  获取所有分类信息
+     */
+    allCategory() {
+      let _this = this;
+      Loading.show();
+      _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/category/all').then((response)=>{
+        Loading.hide();
+        let resp = response.data;
+        _this.categorys = resp.content;
+        _this.initTree();
+      })
+    },
+    /**
+     *  初始化下拉树
+     */
+    initTree() {
+      let _this = this;
+      let setting = {
+        check: {
+          enable: true
+        },
+        data: {
+          simpleData: {
+            idKey: "id",
+            pIdKey: "parent",
+            rootPId: "00000000",
+            enable: true
+          }
+        }
+      };
+      let zNodes = _this.categorys;
+      // 存储分类数据
+      _this.tree = $.fn.zTree.init($("#tree"), setting, zNodes);
+    },
+    /**
+     * 查找课程下所有分类
+     * @param courseId
+     */
+    listCategory(courseId) {
+      let _this = this;
+      Loading.show();
+      _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/course/list-category/' + courseId).then((res)=>{
+        Loading.hide();
+        console.log("查找课程下所有分类结果：", res);
+        let response = res.data;
+        let categorys = response.content;
+        // 勾选查询到的分类,先将树中勾选清空，再根据查询分类数据进行勾选
+        _this.tree.checkAllNodes(false);
+        for (let i = 0; i < categorys.length; i++) {
+          //比对节点数据，进行勾选
+          let node = _this.tree.getNodeByParam("id", categorys[i].categoryId);
+          _this.tree.checkNode(node, true);
+        }
+      })
+    },
   }
 }
 </script>

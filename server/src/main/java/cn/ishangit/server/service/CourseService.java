@@ -13,6 +13,7 @@ import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -26,6 +27,9 @@ public class CourseService {
 
     @Resource
     private MyCourseMapper myCourseMapper;
+
+    @Resource
+    private CourseCategoryService courseCategoryService;
 
     private final static Logger LOG = LoggerFactory.getLogger(CourseService.class);
 
@@ -48,16 +52,19 @@ public class CourseService {
      * 保存
      * @param courseDto
      */
+    @Transactional
     public void save(CourseDto courseDto){
         Course course = CopyUtils.copy(courseDto,Course.class);
         Date now = new Date();
         course.setCreatedAt(now);
         course.setUpdatedAt(now);
         if(StringUtils.isEmpty(course.getId())){
+            course.setId(UuidUtil.getShortUuid());
             this.insert(course);
         }else {
             this.update(course);
         }
+        courseCategoryService.saveBatch(course.getId(),courseDto.getCategorys());
     }
 
     /**
@@ -74,7 +81,6 @@ public class CourseService {
      * @param course
      */
     public void insert(Course course){
-        course.setId(UuidUtil.getShortUuid());
         courseMapper.insert(course);
     }
 
